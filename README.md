@@ -1,2 +1,2 @@
 # GeMSLR_MATLAB
-Test for gemslr
+Tests for gemslr

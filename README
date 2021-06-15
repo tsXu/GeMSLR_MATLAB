@@ -2,6 +2,7 @@ The MATLAB code for GeMSLR using Arnoldi method.
 
 test files:
     gemslr_test.m:  multilevel GeMSLR solve
+    gemslr_exact_test.m: multilevel GeMSLR solve with exact LU factorization
 
 main parameters:
     params.m:               Set different preconditioning parameters
