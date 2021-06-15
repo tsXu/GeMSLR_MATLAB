@@ -1,4 +1,4 @@
-%%This is a test file for GeMSLR
+%%This is a test file for GeMSLR with exact factorization
 % Note: this is a version for complex linear system
 % see params.m to change settings
 % see create_test_matrix.m to modify test matrices
@@ -129,8 +129,8 @@ for levi = (nlev-1):-1:1
             Afunc = @(x) axpy( SCinv, x);
         else
             SB = PRE.Levs{levi}.B - PRE.Levs{levi}.F * (PRE.Levs{levi}.C \ PRE.Levs{levi}.E);
-            CESF = PRE.Levs{levi}.C \ (PRE.Levs{levi}.E * ( SB \ PRE.Levs{levi}.F ) );
-            Afunc = @(x) axpy( CESF, x);
+            ESFC = (PRE.Levs{levi}.E * ( SB \ PRE.Levs{levi}.F ) ) / PRE.Levs{levi}.C;
+            Afunc = @(x) axpy( ESFC, x);
         end
         
         [Arnodi_V, Arnodi_H, m2, tits] = arnoldi( Afunc, Arnodi_V, Arnodi_H, msteps, rank_k, rank_k2, 1e-16, atol);
@@ -149,8 +149,15 @@ for levi = (nlev-1):-1:1
             theta = 0.0;
             if use_scinv
                 PRE.Levs{levi}.G = inv(eye(local_rank) - Arnodi_H) - 1/(1-theta)*eye(local_rank);
+                MS = (speye(nC)+Arnodi_V*PRE.Levs{levi}.G*Arnodi_V')*(PRE.Levs{levi}.C\S); % (I+LR)*C^{-1}*S
+                eig_MS = eig(full(MS));
+                plot_eig_real(eig_MS);
             else
                 PRE.Levs{levi}.G = Arnodi_H;
+                S = PRE.Levs{levi}.C - PRE.Levs{levi}.E * (PRE.Levs{levi}.B \ PRE.Levs{levi}.F);
+                MS = (speye(nC)+Arnodi_V*PRE.Levs{levi}.G*Arnodi_V')*(PRE.Levs{levi}.C\S); % (I+LR)*C^{-1}*S
+                eig_MS = eig(full(MS));
+                plot_eig_real(eig_MS);
             end
             % here we keep Z and Y for future tests,
             % we are not counting them twice when compute the fill factor

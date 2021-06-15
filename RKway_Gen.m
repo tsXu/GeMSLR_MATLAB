@@ -1,4 +1,4 @@
-function [ p, nlev, lev_ptr, subdm_ptr ] = RKway_Gen( A, k, nlev, minsep )
+function [ p, nlev, lev_ptr, subdm_ptr ] = RKway_Gen( A, k, nlev, minsep, usercm )
 %[ p, nlev, lev_ptr, subdm_ptr ] = RKway_Gen( A, nlev, minsep )
 %   Apply recursive K-way partition (spectral-based). We assume that the
 %   adjancency graph of A has only 1 connected component.
@@ -12,6 +12,7 @@ function [ p, nlev, lev_ptr, subdm_ptr ] = RKway_Gen( A, k, nlev, minsep )
 %   k:          the k of Kway partition
 %   nlev:       target number of levels
 %   minsep:     min separator (stop when matrix size is smaller)
+%   usercm:     use rcm or amd
 
 n = size(A,1);
 clev = 1;
@@ -76,20 +77,28 @@ subdm_ptr{clev} = n+1;
 lev_ptr = [lev_ptr, n+1];
 
 for i = 1:clev
-    % apply RCM on each subdomain
+    % apply RCM/AMD on each subdomain
     for j = 1:length(subdm_ptr{i})
         % get diagonal matrix
         if j == 1
             idx_s = lev_ptr(i);
             idx_e = subdm_ptr{i}(1)-1;
             C = A(p(idx_s:idx_e),p(idx_s:idx_e));
-            rcm = symrcm(C);
+            if usercm
+                rcm = symrcm(C);
+            else
+                rcm = symamd(C);
+            end
             p(idx_s:idx_e) = p(rcm + idx_s - 1);
         else
             idx_s = subdm_ptr{i}(j-1);
             idx_e = subdm_ptr{i}(j)-1;
             C = A(p(idx_s:idx_e),p(idx_s:idx_e));
-            rcm = symrcm(C);
+            if usercm
+                rcm = symrcm(C);
+            else
+                rcm = symamd(C);
+            end
             p(idx_s:idx_e) = p(rcm + idx_s - 1);
         end
         

@@ -44,7 +44,7 @@ if(plotperm)
     end
     xlabel('');
     set(hFig, 'Position', [1000 0 xx yy])
-    Problem.name = 'Single-level vertex separator';
+    Problem.name = 'Multilevel domain decomposition.';
     title(sprintf('%s', Problem.name),IN,in);
 end
 
@@ -222,7 +222,7 @@ toc;
 figure;
 semilogy([0:its1],res1,'linestyle','--','marker','*','LineWidth',2,'color','r')
 text(its1,res1(its1)/2,num2str(ffact1),'fontsize',18);
-title([' SLR of matrix -- N = ', num2str(n)]);
+title([' GeMSLR of matrix -- N = ', num2str(n)]);
 hold on;
 semilogy([0:its2],res2,'linestyle','--','marker','*','LineWidth',2,'color','b')
 text(its2,res2(its2)/2,num2str(ffact2),'fontsize',18);

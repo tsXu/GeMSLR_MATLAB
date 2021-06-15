@@ -25,10 +25,10 @@ tolits = 1e-06;
 maxits = 600;
 
 %% LOW-RANK paras
-rank_k_top      = 20;   % target number of eigs computed on the top level
-rank_k2_top     = 20;   % target number of eigs kept on the top level
-rank_k_lower    = 20;  % target number of eigs computed on other levels
-rank_k2_lower   = 20;  % target number of eigs kept on other levels
+rank_k_top      = 5;   % target number of eigs computed on the top level
+rank_k2_top     = 5;   % target number of eigs kept on the top level
+rank_k_lower    = 5;  % target number of eigs computed on other levels
+rank_k2_lower   = 5;  % target number of eigs kept on other levels
 msteps_top      = 600;  % Arnoldi steps during each outer iteration on the top level
 msteps_lower    = 600;  % Arnoldi steps during each outer iteration on other levels
 atol_top        = 1e-12; % how accurate we compute those eigenvalues on the top level

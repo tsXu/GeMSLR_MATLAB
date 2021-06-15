@@ -13,6 +13,7 @@ gen = false;
 nlev = 2; % set number of levels
 k = 4; % set number of subdomains on each level
 minsep = max(k,16); % set minimal size of separator
+usercm = false; % use rcm or amd
 
 if(gen)
     % load matrix data
@@ -29,7 +30,7 @@ if(gen)
     
     %A = mmread('./Matrices/bp__1000.mtx');
     n = size(A,1);
-    [ p, nlev, lev_ptr, subdm_ptr ] = RKway_Gen( A, k, nlev, minsep );
+    [ p, nlev, lev_ptr, subdm_ptr ] = RKway_Gen( A, k, nlev, minsep, usercm );
     
 else
     nx = 16;
@@ -42,7 +43,7 @@ else
     A = fd3d(nx,ny,nz,alphax,alphay,alphaz,shiftz);
     n = nx*ny*nz;
     %[p,~,~,lev_ptr,subdm_ptr] = NDRegGrid(nx, ny, nz, nlev); % grid
-    [ p, nlev, lev_ptr, subdm_ptr ] = RKway_Gen( A, k, nlev, minsep ); % spectral
+    [ p, nlev, lev_ptr, subdm_ptr ] = RKway_Gen( A, k, nlev, minsep, usercm ); % spectral
     
 end
 
